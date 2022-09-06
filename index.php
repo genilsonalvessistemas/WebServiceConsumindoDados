@@ -90,13 +90,13 @@
 
     function chamaCidade() {
         $('tr').on('click', function() {
-            var myModal = document.getElementById('exampleModal');
-
+            // var myModal = document.getElementById('exampleModal');
             // myModal.addEventListener('shown.bs.modal', function() {
             //     $(this).find($('.modal-body')).html('')
             // });
-            myModal.show(modalToggle);
+            // $(myModal).modal('show');
 
+            $('#exampleModal').on('shown.bs.modal', function() {});
 
             var uf = $(this).find('td:eq(1)').text();
 
@@ -104,7 +104,7 @@
                     uf: uf
                 },
                 function(data, textStatus, jqXHR) {
-                    $(this).find($('.modal-body')).html(data);
+                    $('.modal-body').append(data);
                 }
             );
         });
