@@ -5,10 +5,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Consumindo Web Service do IBGE</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
     <!-- <script src="https://code.jquery.com/jquery-3.6.1.slim.js" integrity="sha256-tXm+sa1uzsbFnbXt8GJqsgi2Tw+m4BLGDof6eUPjbtk=" crossorigin="anonymous"></script> -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <link rel="shortcut icon" href="#">
 </head>
 
@@ -21,27 +22,24 @@
 
         </div>
     </div>
-
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Resultado da consulta</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" id="armazenaresultado">
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-primary">Ok</button>
                 </div>
             </div>
         </div>
     </div>
 </body>
-
-
 <script type="text/javascript">
     let table = document.createElement('table');
     let thead = document.createElement('thead');
@@ -65,14 +63,10 @@
 
     $(table).addClass('table table-striped');
     const data = '';
-    // fetch('estados.json', {
-    fetch('https://servicodados.ibge.gov.br/api/v1/localidades/estados', {
-
-        })
+    fetch('https://servicodados.ibge.gov.br/api/v1/localidades/estados', {})
         .then((response) => response.json())
         .then((data) => {
             let resultado = JSON.stringify(data);
-            // alert(resultado);
             var tableNew = document.getElementById('dados_table');
             data.forEach(function(data) {
                 var tr = document.createElement('tr');
@@ -82,31 +76,45 @@
                 tableNew.appendChild(tr);
             });
             chamaCidade();
-
         })
         .catch((error) => {
-            console.error('Error:', error)
+            console.error('Error:', error);
         });
 
     function chamaCidade() {
         $('tr').on('click', function() {
-            // var myModal = document.getElementById('exampleModal');
-            // myModal.addEventListener('shown.bs.modal', function() {
-            //     $(this).find($('.modal-body')).html('')
-            // });
-            // $(myModal).modal('show');
-
-            $('#exampleModal').on('shown.bs.modal', function() {});
 
             var uf = $(this).find('td:eq(1)').text();
-
-            $.post("http://localhost/TREINAMENTO/WEBSERVICE/acessaApi.php", {
+            console.log(uf);
+            $.post('http://localhost/WebServiceConsumindoDados/acessaApi.php', {
                     uf: uf
                 },
                 function(data, textStatus, jqXHR) {
+                    var myModal = document.getElementById('exampleModal');
+                    myModal.addEventListener('shown.bs.modal', function() {});
+                    $(myModal).modal('show');
                     $('.modal-body').append(data);
                 }
             );
+            $('.modal-body').empty();
+            uf = '';
+            console.log(uf);
+            // $.ajax({
+            //     type: 'POST',
+            //     url: 'http://localhost/WebServiceConsumindoDados/acessaApi.php',
+            //     dataType: 'html',
+            //     data: {
+            //         uf: uf
+            //     },
+            //     success: function(response) {
+            //         var myModal = document.getElementById('exampleModal');
+            //         myModal.addEventListener('shown.bs.modal', function() {});
+            //         $(myModal).modal('show');
+            //         $('#armazenaresultado').html(data);;
+            //         // $('.modal-body').append(data);
+            //     }
+            // });
+
         });
     }
 </script>
