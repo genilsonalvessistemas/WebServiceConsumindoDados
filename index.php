@@ -5,8 +5,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Consumindo Web Service do IBGE</title>
-    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
-    <!-- <script src="https://code.jquery.com/jquery-3.6.1.slim.js" integrity="sha256-tXm+sa1uzsbFnbXt8GJqsgi2Tw+m4BLGDof6eUPjbtk=" crossorigin="anonymous"></script> -->
     <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
@@ -83,10 +81,10 @@
 
     function chamaCidade() {
         $('tr').on('click', function() {
-
             var uf = $(this).find('td:eq(1)').text();
             console.log(uf);
-            $.post('http://localhost/WebServiceConsumindoDados/acessaApi.php', {
+            $.post('http://localhost/TREINAMENTO/WebService/acessaApi.php', {
+                    // $.post('http://localhost/WebServiceConsumindoDados/acessaApi.php', {
                     uf: uf
                 },
                 function(data, textStatus, jqXHR) {
@@ -99,22 +97,6 @@
             $('.modal-body').empty();
             uf = '';
             console.log(uf);
-            // $.ajax({
-            //     type: 'POST',
-            //     url: 'http://localhost/WebServiceConsumindoDados/acessaApi.php',
-            //     dataType: 'html',
-            //     data: {
-            //         uf: uf
-            //     },
-            //     success: function(response) {
-            //         var myModal = document.getElementById('exampleModal');
-            //         myModal.addEventListener('shown.bs.modal', function() {});
-            //         $(myModal).modal('show');
-            //         $('#armazenaresultado').html(data);;
-            //         // $('.modal-body').append(data);
-            //     }
-            // });
-
         });
     }
 </script>
